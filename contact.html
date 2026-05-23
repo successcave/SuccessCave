@@ -485,7 +485,17 @@
     </div>
 
     <script>
-        const APPS_SCRIPT_URL = 'https://script.google.com/macros/s/AKfycbyFx4OMVhUWXw-M9ppV3typIVofCTIljvuWKMWieN6jzZKI-ry04B2wrm7cKyP4vuCj/exec';
+        const APPS_SCRIPT_URL = 'https://script.google.com/macros/s/AKfycbzJQ4jKxttWfeWTrYeInGomoNjTmtDlI5cCtzABne0fb666aaV_oSaWhPgT5-hvgC3bRw/exec';
+
+        function submitToSheet(params) {
+            const url = APPS_SCRIPT_URL + '?' + new URLSearchParams(params).toString();
+            return new Promise((resolve) => {
+                const img = new Image();
+                img.onload = img.onerror = () => resolve();
+                img.src = url;
+                setTimeout(resolve, 3000);
+            });
+        }
 
         function showSuccessNotification(title, message, timeText) {
             const notif = document.getElementById('success-notification');
@@ -505,7 +515,7 @@
             btn.innerHTML = '<span>Sending...</span><svg class="animate-spin w-5 h-5" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24"><circle class="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" stroke-width="4"></circle><path class="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z"></path></svg>';
             btn.disabled = true;
 
-            const payload = {
+            const params = {
                 type: 'contact',
                 firstName: document.getElementById('contact-fname').value.trim(),
                 lastName: document.getElementById('contact-lname').value.trim(),
@@ -515,26 +525,17 @@
                 queryType: document.querySelector('input[name="query-type"]:checked')?.value || 'general'
             };
 
-            try {
-                await fetch(APPS_SCRIPT_URL, {
-                    method: 'POST',
-                    mode: 'no-cors',
-                    headers: { 'Content-Type': 'application/json' },
-                    body: JSON.stringify(payload)
-                });
-                document.getElementById('contact-form').reset();
-                showSuccessNotification(
-                    "Message Sent! 🚀",
-                    "Our team is on it! Expect a response within 24 hours.",
-                    "Typical response: Within 24 hours"
-                );
-            } catch (err) {
-                alert('Something went wrong. Please email us at successcave1804@gmail.com');
-            } finally {
-                btn.innerHTML = originalHTML;
-                btn.disabled = false;
-                lucide.createIcons();
-            }
+            await submitToSheet(params);
+
+            btn.innerHTML = originalHTML;
+            btn.disabled = false;
+            lucide.createIcons();
+            document.getElementById('contact-form').reset();
+            showSuccessNotification(
+                "Message Sent! 🚀",
+                "Our team is on it! Expect a response within 24 hours.",
+                "Typical response: Within 24 hours"
+            );
         }
 
         async function showBootcampSuccess(formEl) {
@@ -544,7 +545,7 @@
             btn.disabled = true;
 
             const fields = formEl.querySelectorAll('input, select, textarea');
-            const payload = {
+            const params = {
                 type: 'bootcamp',
                 firstName: fields[0]?.value.trim() || '',
                 lastName: fields[1]?.value.trim() || '',
@@ -558,25 +559,16 @@
                 source: fields[9]?.value || ''
             };
 
-            try {
-                await fetch(APPS_SCRIPT_URL, {
-                    method: 'POST',
-                    mode: 'no-cors',
-                    headers: { 'Content-Type': 'application/json' },
-                    body: JSON.stringify(payload)
-                });
-                closeBootcampModal();
-                showSuccessNotification(
-                    "Application Received! 🎉",
-                    "You're one step closer! Check your email for next steps.",
-                    "Review time: 2-3 business days"
-                );
-            } catch (err) {
-                alert('Something went wrong. Please email us at successcave1804@gmail.com');
-            } finally {
-                btn.innerHTML = originalHTML;
-                btn.disabled = false;
-            }
+            await submitToSheet(params);
+
+            btn.innerHTML = originalHTML;
+            btn.disabled = false;
+            closeBootcampModal();
+            showSuccessNotification(
+                "Application Received! 🎉",
+                "You're one step closer! Check your email for next steps.",
+                "Review time: 2-3 business days"
+            );
         }
     </script>
     <script>
