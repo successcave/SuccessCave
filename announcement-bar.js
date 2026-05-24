@@ -76,7 +76,7 @@ function loadAnnouncementBar() {
     bar.id = 'announcement-bar';
     bar.innerHTML = `
         <div class="ann-inner">
-            <span>🔥 Data Analytics Bootcamp Registration is Open — Starts June 1, 2026</span>
+            <span>🔥 Data Analytics Bootcamp Registration is Open — Starts June 13, 2026</span>
             <a href="contact.html" class="ann-btn">Register Now</a>
         </div>
         <button class="ann-close" onclick="closeAnnouncementBar()" aria-label="Close">&#10005;</button>
