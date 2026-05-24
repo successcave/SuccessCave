@@ -1,0 +1,807 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Program Details - Success Cave</title>
+    <link rel="icon" type="image/png" href="logo2.png">
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
+    <script src="https://unpkg.com/lucide@latest"></script>
+    <script>
+        tailwind.config = {
+            theme: {
+                extend: {
+                    fontFamily: {
+                        sans: ['Inter', 'sans-serif'],
+                    },
+                    colors: {
+                        primary: {
+                            50: '#eff6ff',
+                            100: '#dbeafe',
+                            500: '#3b82f6',
+                            600: '#2563eb',
+                            700: '#1d4ed8',
+                            900: '#1e3a8a',
+                        },
+                        accent: {
+                            500: '#f59e0b',
+                            600: '#d97706',
+                        }
+                    }
+                }
+            }
+        }
+    </script>
+    <style>
+        .gradient-hero {
+            background: linear-gradient(135deg, #1e3a8a 0%, #2563eb 50%, #3b82f6 100%);
+        }
+        
+        .gradient-text {
+            background: linear-gradient(135deg, #2563eb, #f59e0b);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+        }
+        
+        .card-hover {
+            transition: all 0.3s ease;
+        }
+        
+        .card-hover:hover {
+            transform: translateY(-8px);
+            box-shadow: 0 20px 40px -10px rgba(0, 0, 0, 0.15);
+        }
+        
+        .animate-float {
+            animation: float 6s ease-in-out infinite;
+        }
+        
+        @keyframes float {
+            0%,
+            100% {
+                transform: translateY(0px);
+            }
+            50% {
+                transform: translateY(-20px);
+            }
+        }
+        
+        .reveal {
+            opacity: 0;
+            transform: translateY(30px);
+            transition: all 0.8s ease-out;
+        }
+        
+        .reveal.active {
+            opacity: 1;
+            transform: translateY(0);
+        }
+        
+        .blob {
+            position: absolute;
+            filter: blur(80px);
+            opacity: 0.4;
+            z-index: 0;
+        }
+        
+        .modal-overlay {
+            position: fixed;
+            inset: 0;
+            background: rgba(0, 0, 0, 0.6);
+            backdrop-filter: blur(4px);
+            z-index: 100;
+            display: none;
+            align-items: center;
+            justify-content: center;
+            padding: 1rem;
+        }
+        
+        .modal-overlay.active {
+            display: flex;
+        }
+        
+        .modal-content {
+            background: white;
+            border-radius: 1.5rem;
+            max-width: 600px;
+            width: 100%;
+            max-height: 90vh;
+            overflow-y: auto;
+            padding: 2rem;
+            position: relative;
+            animation: modalSlide 0.3s ease-out;
+        }
+        
+        @keyframes modalSlide {
+            from {
+                opacity: 0;
+                transform: translateY(20px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+        
+        .bootcamp-card {
+            animation: bootcampPulse 3s ease-in-out infinite;
+        }
+        
+        @keyframes bootcampPulse {
+            0%,
+            100% {
+                transform: scale(1);
+                box-shadow: 0 10px 40px -10px rgba(37, 99, 235, 0.3);
+            }
+            50% {
+                transform: scale(1.02);
+                box-shadow: 0 20px 60px -10px rgba(37, 99, 235, 0.5);
+            }
+        }
+        
+        .bootcamp-badge {
+            animation: badgeGlow 2s ease-in-out infinite;
+        }
+        
+        @keyframes badgeGlow {
+            0%,
+            100% {
+                box-shadow: 0 0 5px rgba(245, 158, 11, 0.3);
+            }
+            50% {
+                box-shadow: 0 0 20px rgba(245, 158, 11, 0.6);
+            }
+        }
+        
+        .bootcamp-btn {
+            animation: btnBounce 2s ease-in-out infinite;
+        }
+        
+        @keyframes btnBounce {
+            0%,
+            100% {
+                transform: translateY(0);
+            }
+            50% {
+                transform: translateY(-3px);
+            }
+        }
+    </style>
+
+    <style>
+        #announcement-bar {
+            position: fixed;
+            top: 0;
+            left: 0;
+            right: 0;
+            z-index: 60;
+        }
+        
+        #navbar {
+            top: 40px !important;
+        }
+        
+        body {
+            padding-top: 40px;
+        }
+        
+        @media (max-width: 768px) {
+            #navbar {
+                top: 60px !important;
+            }
+            body {
+                padding-top: 60px;
+            }
+        }
+    </style>
+</head>
+
+<body class="font-sans text-gray-800 antialiased overflow-x-hidden">
+    <!-- Announcement Bar -->
+    <div id="announcement-bar" class="bg-accent-600 text-white text-center py-2.5 px-4 text-sm font-medium relative z-[60]">
+        <div class="max-w-7xl mx-auto flex items-center justify-center gap-3 flex-wrap">
+            <span class="flex items-center gap-2">
+            <i data-lucide="flame" class="w-4 h-4"></i>
+            Data Analytics Bootcamp Registration is Open — Starts June 1, 2026
+        </span>
+            <a href="contact.html" class="bg-white text-accent-600 px-4 py-1 rounded-full text-xs font-bold hover:bg-gray-100 transition">
+            Register Now
+        </a>
+        </div>
+        <button onclick="closeAnnouncementBar()" class="absolute right-4 top-1/2 -translate-y-1/2 text-white/80 hover:text-white transition" aria-label="Close announcement">
+        <i data-lucide="x" class="w-4 h-4"></i>
+    </button>
+    </div>
+
+    <script>
+        function closeAnnouncementBar() {
+            const bar = document.getElementById('announcement-bar');
+            if (bar) {
+                bar.style.display = 'none';
+            }
+        }
+    </script>
+    <!-- Navigation -->
+    <nav class="relative w-full z-50 bg-white/90 backdrop-blur-md border-b border-gray-100 transition-all duration-300" id="navbar">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+            <div class="flex justify-between items-center h-16">
+                <a href="index.html" class="flex items-center gap-3">
+                    <img src="logo2.png" alt="Success Cave Logo" class="w-10 h-10 object-contain">
+                    <span class="text-2xl font-bold text-gray-900">Success<span class="text-primary-600">Cave</span></span>
+                </a>
+
+                <div class="hidden md:flex items-center space-x-8">
+                    <a href="courses.html" class="text-gray-600 hover:text-primary-600 font-medium transition">Programs</a>
+                    <a href="about.html" class="text-gray-600 hover:text-primary-600 font-medium transition">About Us</a>
+                    <a href="index.html#testimonials" class="text-gray-600 hover:text-primary-600 font-medium transition">Success Stories</a>
+                    <a href="contact.html" class="text-gray-600 hover:text-primary-600 font-medium transition">Contact</a>
+                </div>
+
+                <div class="hidden md:flex items-center space-x-4">
+                    <a href="contact.html" class="bg-primary-600 hover:bg-primary-700 text-white px-6 py-2.5 rounded-full font-semibold transition shadow-lg shadow-primary-500/30">
+                        Get Started
+                    </a>
+                </div>
+
+                <button class="md:hidden text-gray-600" id="mobile-menu-btn">
+                    <i data-lucide="menu" class="w-6 h-6"></i>
+                </button>
+            </div>
+        </div>
+
+        <!-- Mobile Menu -->
+        <div class="hidden md:hidden bg-white border-t border-gray-100" id="mobile-menu">
+            <div class="px-4 py-4 space-y-3">
+                <a href="courses.html" class="block text-gray-600 hover:text-primary-600 font-medium">Programs</a>
+                <a href="about.html" class="block text-gray-600 hover:text-primary-600 font-medium">About Us</a>
+                <a href="index.html#testimonials" class="block text-gray-600 hover:text-primary-600 font-medium">Success Stories</a>
+                <a href="contact.html" class="block text-gray-600 hover:text-primary-600 font-medium">Contact</a>
+                <a href="contact.html" class="block w-full bg-primary-600 text-white px-6 py-3 rounded-full font-semibold mt-4 text-center">Get Started</a>
+            </div>
+        </div>
+    </nav>
+    <!-- Dynamic Content Container -->
+    <section class="relative pt-20 pb-12 gradient-hero overflow-hidden">
+        <div class="blob bg-primary-400 w-96 h-96 rounded-full top-0 left-0"></div>
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 relative z-10">
+            <div class="text-center max-w-3xl mx-auto">
+                <span class="text-accent-500 font-semibold text-sm uppercase tracking-wider">Program Details</span>
+                <h1 id="course-title" class="text-5xl md:text-6xl font-bold text-white mt-3 mb-6">Loading...</h1>
+                <p id="course-tagline" class="text-xl text-blue-100">...</p>
+            </div>
+        </div>
+    </section>
+
+    <section class="py-24 bg-white">
+        <div class="max-w-5xl mx-auto px-4 sm:px-6 lg:px-8">
+            <!-- Overview -->
+            <div class="mb-16 reveal">
+                <div class="flex items-center gap-4 mb-6">
+                    <div id="course-icon-bg" class="w-16 h-16 bg-primary-100 rounded-2xl flex items-center justify-center">
+                        <i id="course-icon" data-lucide="code-2" class="w-8 h-8 text-primary-600"></i>
+                    </div>
+                    <div>
+                        <span id="course-duration" class="text-sm font-semibold text-primary-600 bg-primary-50 px-3 py-1 rounded-full">Duration</span>
+                    </div>
+                </div>
+                <p id="course-description" class="text-xl text-gray-600 leading-relaxed">...</p>
+            </div>
+
+            <!-- What You'll Master -->
+            <div class="mb-16 reveal">
+                <h2 class="text-3xl font-bold text-gray-900 mb-8">What You'll Master</h2>
+                <div id="master-grid" class="grid md:grid-cols-2 gap-4">
+                    <!-- Populated by JS -->
+                </div>
+            </div>
+
+            <!-- Projects -->
+            <div class="mb-16 reveal">
+                <h2 class="text-3xl font-bold text-gray-900 mb-8">Real-World Projects</h2>
+                <div id="projects-grid" class="grid md:grid-cols-2 gap-6">
+                    <!-- Populated by JS -->
+                </div>
+            </div>
+
+            <!-- Career Paths -->
+            <div class="mb-16 reveal">
+                <h2 class="text-3xl font-bold text-gray-900 mb-8">Career Paths</h2>
+                <div id="careers-grid" class="flex flex-wrap gap-4">
+                    <!-- Populated by JS -->
+                </div>
+            </div>
+
+            <!-- Related Blogs -->
+            <div class="mb-16 reveal">
+                <h2 class="text-3xl font-bold text-gray-900 mb-8">Related Reading</h2>
+                <div id="blogs-grid" class="space-y-4">
+                    <!-- Populated by JS -->
+                </div>
+            </div>
+
+            <!-- CTA -->
+            <div class="bg-primary-50 rounded-2xl p-8 border border-primary-100 text-center reveal">
+                <h3 class="text-2xl font-bold text-gray-900 mb-4">Ready to accelerate your career?</h3>
+                <div class="flex flex-wrap justify-center gap-4 mb-6 text-sm text-gray-600">
+                    <span class="flex items-center gap-1"><i data-lucide="check" class="w-4 h-4 text-primary-600"></i> Industry-Relevant Curriculum</span>
+                    <span class="flex items-center gap-1"><i data-lucide="check" class="w-4 h-4 text-primary-600"></i> Real-World Projects</span>
+                    <span class="flex items-center gap-1"><i data-lucide="check" class="w-4 h-4 text-primary-600"></i> Dedicated Mentorship</span>
+                    <span class="flex items-center gap-1"><i data-lucide="check" class="w-4 h-4 text-primary-600"></i> Professional Certificate</span>
+                </div>
+                <div id="enroll-section">
+                    <a href="#" id="enroll-btn" onclick="openEnrollModal(event)" class="inline-flex items-center gap-2 bg-primary-600 hover:bg-primary-700 text-white px-8 py-4 rounded-full font-bold text-lg transition shadow-lg">
+                        Enroll Today
+                        <i data-lucide="arrow-right" class="w-5 h-5"></i>
+                    </a>
+                    <div id="coming-soon-badge" class="hidden inline-flex items-center gap-2 bg-gray-100 text-gray-500 px-6 py-3 rounded-full font-bold">
+                        <i data-lucide="clock" class="w-5 h-5"></i> Coming Soon
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <script>
+        const courseData = {
+            'full-stack-development': {
+                title: "FULL-STACK DEVELOPMENT",
+                tagline: "Transform Ideas Into Production-Ready Applications",
+                description: "Build modern web applications from the ground up using industry-standard technologies. Learn frontend development, backend engineering, databases, APIs, authentication, deployment, and cloud fundamentals through practical projects.",
+                duration: "12 Weeks",
+                icon: "code-2",
+                color: "primary",
+                master: ["HTML5, CSS3 & Modern JavaScript", "React.js Development", "Node.js & Express.js", "REST APIs & Authentication", "MongoDB & Database Design", "Git & GitHub Workflows", "Cloud Deployment"],
+                projects: ["E-Commerce Platform", "Real-Time Chat Application", "Project Management System", "Personal Portfolio Website"],
+                careers: ["Full-Stack Developer", "Frontend Developer", "Backend Developer", "Software Engineer"],
+                blogs: ["Frontend vs Backend Development", "How to Become a Developer in 2026", "Top Programming Skills Employers Want"]
+            },
+            'ai-machine-learning': {
+                title: "AI & MACHINE LEARNING",
+                tagline: "Build Intelligent Solutions for Real-World Problems",
+                description: "Learn Artificial Intelligence and Machine Learning through practical implementation, data-driven projects, and modern AI workflows.",
+                duration: "16 Weeks",
+                icon: "brain",
+                color: "purple",
+                master: ["Python Programming", "Data Science Foundations", "Machine Learning Algorithms", "Deep Learning Concepts", "NLP Fundamentals", "Computer Vision Basics", "AI Model Deployment"],
+                projects: ["AI Chatbot", "Customer Churn Prediction", "Recommendation System", "Image Classification Model"],
+                careers: ["AI Engineer", "Machine Learning Engineer", "Data Scientist", "AI Product Analyst"],
+                blogs: ["Future of Artificial Intelligence", "Machine Learning Roadmap", "AI Careers Explained"]
+            },
+            'product-design': {
+                title: "PRODUCT DESIGN (UX/UI)",
+                tagline: "Create Digital Experiences People Love",
+                description: "Master design thinking, user research, wireframing, prototyping, and interface design using modern design tools.",
+                duration: "10 Weeks",
+                icon: "pen-tool",
+                color: "green",
+                master: ["Design Thinking", "User Research", "Wireframing", "Figma Mastery", "Prototyping", "Design Systems", "Usability Testing"],
+                projects: ["Mobile App Design", "SaaS Dashboard Design", "E-Commerce UX Redesign", "Professional Design Portfolio"],
+                careers: ["UX Designer", "UI Designer", "Product Designer", "Design Consultant"],
+                blogs: ["Principles of Great UX Design", "Figma Tips for Beginners", "Building a Design Portfolio"]
+            },
+            'data-analytics': {
+                title: "DATA ANALYTICS",
+                tagline: "Turn Data Into Business Decisions",
+                description: "Develop practical analytical skills through business-focused projects and industry-standard tools.",
+                duration: "8 Weeks",
+                icon: "bar-chart-3",
+                color: "orange",
+                master: ["SQL", "Python Analytics", "Tableau", "Power BI", "Data Cleaning", "Dashboard Creation", "Data Storytelling"],
+                projects: ["Customer Insights Dashboard", "Sales Analytics System", "KPI Tracking Dashboard", "Business Intelligence Reports"],
+                careers: ["Data Analyst", "Business Analyst", "BI Analyst", "Reporting Analyst"],
+                blogs: ["SQL vs Python for Analytics", "How Businesses Use Data", "Essential Skills for Data Analysts"]
+            },
+            'cybersecurity': {
+                title: "CYBERSECURITY",
+                tagline: "Protect Digital Systems & Infrastructure",
+                description: "Learn the foundations of cybersecurity, risk management, network security, and threat detection.",
+                duration: "14 Weeks",
+                icon: "shield-check",
+                color: "red",
+                master: ["Security Fundamentals", "Ethical Hacking Concepts", "Network Security", "Vulnerability Assessment", "Incident Response", "Cloud Security Basics"],
+                projects: ["Security Audit Simulation", "Threat Assessment Report", "Risk Analysis Project", "Network Security Evaluation"],
+                careers: ["Cybersecurity Analyst", "Security Consultant", "SOC Analyst", "Information Security Specialist"],
+                blogs: ["Cybersecurity Career Guide", "Common Security Threats", "Building a Career in Security"]
+            },
+            'growth-marketing': {
+                title: "GROWTH MARKETING",
+                tagline: "Drive Customer Acquisition & Business Growth",
+                description: "Learn modern marketing frameworks used by startups and global companies to scale rapidly.",
+                duration: "6 Weeks",
+                icon: "megaphone",
+                color: "teal",
+                master: ["SEO", "Performance Marketing", "Content Marketing", "Social Media Strategy", "Conversion Optimization", "Email Marketing", "Marketing Analytics"],
+                projects: ["Marketing Funnel Analysis", "SEO Strategy Project", "Campaign Planning", "Growth Case Study"],
+                careers: ["Growth Marketer", "Digital Marketing Specialist", "SEO Analyst", "Marketing Strategist"],
+                blogs: ["Growth Marketing vs Traditional Marketing", "SEO Trends", "Building a Growth Engine"]
+            },
+            'sql-masters': {
+                title: "SQL MASTERS",
+                tagline: "Master the Language Behind Every Database",
+                description: "Gain deep expertise in SQL and database analytics used across modern businesses.",
+                duration: "6 Weeks",
+                icon: "database",
+                color: "indigo",
+                master: ["SQL Fundamentals", "Advanced Queries", "Joins & Relationships", "Window Functions", "Data Aggregation", "Query Optimization", "Business Reporting"],
+                projects: ["Customer Database Analysis", "Business Reporting System", "Sales Analytics Project", "Executive Dashboard Backend"],
+                careers: ["SQL Developer", "Data Analyst", "Database Analyst", "BI Analyst"],
+                blogs: ["Most Useful SQL Commands", "SQL Interview Preparation", "Why SQL Remains Essential"]
+            },
+            'excel-masterclass': {
+                title: "EXCEL MASTERCLASS",
+                tagline: "Become an Excel Power User",
+                description: "Master one of the world's most valuable business tools through practical exercises and business projects.",
+                duration: "4 Weeks",
+                icon: "table-2",
+                color: "pink",
+                master: ["Advanced Formulas", "Pivot Tables", "Data Cleaning", "Dashboards", "Reporting Automation", "Financial Analysis", "Business Analytics"],
+                projects: ["Executive Dashboard", "Financial Model", "KPI Monitoring System", "Sales Reporting Automation"],
+                careers: ["Business Analyst", "Operations Analyst", "MIS Executive", "Financial Analyst"],
+                blogs: ["Advanced Excel Functions", "Dashboard Design Tips", "Excel Skills Employers Value"]
+            },
+        };
+
+        const urlParams = new URLSearchParams(window.location.search);
+        const courseSlug = urlParams.get('course') || 'full-stack-development';
+        const course = courseData[courseSlug];
+
+        const activeCourses = ['data-analytics', 'sql-masters', 'excel-masterclass'];
+
+        if (course) {
+            document.getElementById('course-title').textContent = course.title;
+            document.getElementById('course-tagline').textContent = course.tagline;
+            document.getElementById('course-description').textContent = course.description;
+            document.getElementById('course-duration').textContent = course.duration;
+
+            // Update icon
+            const iconEl = document.getElementById('course-icon');
+            iconEl.setAttribute('data-lucide', course.icon);
+
+            // Color theming
+            const colorClasses = {
+                'primary': {
+                    bg: 'bg-primary-100',
+                    text: 'text-primary-600'
+                },
+                'purple': {
+                    bg: 'bg-purple-100',
+                    text: 'text-purple-600'
+                },
+                'green': {
+                    bg: 'bg-green-100',
+                    text: 'text-green-600'
+                },
+                'orange': {
+                    bg: 'bg-orange-100',
+                    text: 'text-orange-600'
+                },
+                'red': {
+                    bg: 'bg-red-100',
+                    text: 'text-red-600'
+                },
+                'teal': {
+                    bg: 'bg-teal-100',
+                    text: 'text-teal-600'
+                },
+                'indigo': {
+                    bg: 'bg-indigo-100',
+                    text: 'text-indigo-600'
+                },
+                'pink': {
+                    bg: 'bg-pink-100',
+                    text: 'text-pink-600'
+                }
+            };
+
+            const theme = colorClasses[course.color] || colorClasses['primary'];
+            document.getElementById('course-icon-bg').className = `w-16 h-16 ${theme.bg} rounded-2xl flex items-center justify-center`;
+            iconEl.className = `w-8 h-8 ${theme.text}`;
+
+            // Master items
+            const masterGrid = document.getElementById('master-grid');
+            masterGrid.innerHTML = course.master.map(item => `
+                <div class="flex items-center gap-3 bg-gray-50 rounded-xl p-4 border border-gray-100">
+                    <div class="w-8 h-8 ${theme.bg} rounded-lg flex items-center justify-center flex-shrink-0">
+                        <i data-lucide="check" class="w-4 h-4 ${theme.text}"></i>
+                    </div>
+                    <span class="font-medium text-gray-800">${item}</span>
+                </div>
+            `).join('');
+
+            // Projects
+            const projectsGrid = document.getElementById('projects-grid');
+            projectsGrid.innerHTML = course.projects.map(item => `
+                <div class="bg-white rounded-xl p-6 border border-gray-100 shadow-sm">
+                    <div class="w-10 h-10 ${theme.bg} rounded-lg flex items-center justify-center mb-3">
+                        <i data-lucide="folder" class="w-5 h-5 ${theme.text}"></i>
+                    </div>
+                    <h4 class="font-bold text-gray-900">${item}</h4>
+                </div>
+            `).join('');
+
+            // Careers
+            const careersGrid = document.getElementById('careers-grid');
+            careersGrid.innerHTML = course.careers.map(item => `
+                <span class="bg-gray-100 text-gray-700 px-4 py-2 rounded-full font-medium text-sm">${item}</span>
+            `).join('');
+
+            // Blogs
+            const blogsGrid = document.getElementById('blogs-grid');
+            blogsGrid.innerHTML = course.blogs.map(item => `
+                <div class="flex items-center gap-3 text-gray-600 hover:text-primary-600 transition cursor-pointer">
+                    <i data-lucide="file-text" class="w-5 h-5 flex-shrink-0"></i>
+                    <span class="font-medium">${item}</span>
+                </div>
+            `).join('');
+
+            // Show/hide enroll button based on active status
+            const enrollBtn = document.getElementById('enroll-btn');
+            const comingSoon = document.getElementById('coming-soon-badge');
+            if (enrollBtn && comingSoon) {
+                if (!activeCourses.includes(courseSlug)) {
+                    enrollBtn.classList.add('hidden');
+                    comingSoon.classList.remove('hidden');
+                }
+            }
+
+            // Re-init lucide icons for dynamic content
+            lucide.createIcons();
+        } else {
+            document.getElementById('course-title').textContent = 'Course Not Found';
+            document.getElementById('course-tagline').textContent = 'Please check the URL and try again.';
+        }
+    </script>
+    <!-- Footer -->
+    <footer class="bg-gray-900 text-gray-400 py-16 border-t border-gray-800">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+            <div class="grid md:grid-cols-4 gap-12 mb-12">
+                <div class="col-span-2">
+                    <div class="flex items-center gap-3 mb-6">
+                        <img src="logo2.png" alt="Success Cave Logo" class="w-10 h-10 object-contain">
+                        <span class="text-2xl font-bold text-white">Success<span class="text-primary-500">Cave</span></span>
+                    </div>
+                    <p class="text-gray-500 mb-6 max-w-sm">Empowering individuals through world-class skill development. Bridging the gap between talent and opportunity with practical, industry-aligned training.</p>
+                    <div class="flex gap-4">
+                        <a href="https://linkedin.com/company/successcave" target="_blank" class="w-10 h-10 bg-gray-800 rounded-lg flex items-center justify-center hover:bg-[#0A66C2] hover:text-white transition" title="LinkedIn">
+                            <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M16 8a6 6 0 0 1 6 6v7h-4v-7a2 2 0 0 0-2-2 2 2 0 0 0-2 2v7h-4v-7a6 6 0 0 1 6-6z"/><rect x="2" y="9" width="4" height="12"/><circle cx="4" cy="4" r="2"/></svg>
+                        </a>
+                        <a href="https://www.youtube.com/@successcave3300" target="_blank" class="w-10 h-10 bg-gray-800 rounded-lg flex items-center justify-center hover:bg-[#FF0000] hover:text-white transition" title="YouTube">
+                            <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M2.5 17a24.12 24.12 0 0 1 0-10 2 2 0 0 1 1.4-1.4 49.56 49.56 0 0 1 16.2 0A2 2 0 0 1 21.5 7a24.12 24.12 0 0 1 0 10 2 2 0 0 1-1.4 1.4 49.55 49.55 0 0 1-16.2 0A2 2 0 0 1 2.5 17"/><path d="m10 15 5-3-5-3z"/></svg>
+                        </a>
+                        <a href="https://mail.google.com/mail/?view=cm&fs=1&to=successcave1804@gmail.com" target="_blank" class="w-10 h-10 bg-gray-800 rounded-lg flex items-center justify-center hover:bg-[#EA4335] hover:text-white transition" title="Gmail">
+                            <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="2" y="4" width="20" height="16" rx="2"/><path d="m22 7-8.97 5.7a1.94 1.94 0 0 1-2.06 0L2 7"/></svg>
+                        </a>
+                    </div>
+                </div>
+
+                <div>
+                    <h4 class="text-white font-bold mb-4">Programs</h4>
+                    <ul class="space-y-3">
+                        <li><a href="courses.html" class="hover:text-primary-400 transition">Full-Stack Development</a></li>
+                        <li><a href="courses.html" class="hover:text-primary-400 transition">Data Analytics</a></li>
+                        <li><a href="courses.html" class="hover:text-primary-400 transition">AI & Machine Learning</a></li>
+                        <li><a href="courses.html" class="hover:text-primary-400 transition">UX/UI Design</a></li>
+                        <li><a href="courses.html" class="hover:text-primary-400 transition">SQL Masters</a></li>
+                        <li><a href="courses.html" class="hover:text-primary-400 transition">Excel Masterclass</a></li>
+                    </ul>
+                </div>
+
+                <div>
+                    <h4 class="text-white font-bold mb-4">Company</h4>
+                    <ul class="space-y-3">
+                        <li><a href="about.html" class="hover:text-primary-400 transition">About Us</a></li>
+                        <li><a href="about.html#founders" class="hover:text-primary-400 transition">Founders</a></li>
+                        <li><a href="careers.html" class="hover:text-primary-400 transition">Careers</a></li>
+                        <li><a href="index.html#testimonials" class="hover:text-primary-400 transition">Success Stories</a></li>
+                        <li><a href="contact.html" class="hover:text-primary-400 transition">Contact</a></li>
+                    </ul>
+                </div>
+            </div>
+
+            <div class="border-t border-gray-800 pt-8 flex flex-col md:flex-row justify-between items-center gap-4">
+                <p class="text-sm">© 2026 Success Cave, Inc. All rights reserved.</p>
+                <div class="flex gap-6 text-sm">
+                    <a href="privacy-policy.html" class="hover:text-white transition">Privacy Policy</a>
+                    <a href="terms-of-service.html" class="hover:text-white transition">Terms of Service</a>
+                </div>
+            </div>
+        </div>
+    </footer>
+
+    <script>
+        lucide.createIcons();
+
+        const mobileMenuBtn = document.getElementById('mobile-menu-btn');
+        const mobileMenu = document.getElementById('mobile-menu');
+        if (mobileMenuBtn && mobileMenu) {
+            mobileMenuBtn.addEventListener('click', () => {
+                mobileMenu.classList.toggle('hidden');
+            });
+        }
+
+        const revealElements = document.querySelectorAll('.reveal');
+        const revealObserver = new IntersectionObserver((entries) => {
+            entries.forEach(entry => {
+                if (entry.isIntersecting) {
+                    entry.target.classList.add('active');
+                }
+            });
+        }, {
+            threshold: 0.1
+        });
+
+        revealElements.forEach(el => revealObserver.observe(el));
+
+        const navbar = document.getElementById('navbar');
+        if (navbar) {
+            window.addEventListener('scroll', () => {
+                if (window.scrollY > 50) {
+                    navbar.classList.add('shadow-md');
+                } else {
+                    navbar.classList.remove('shadow-md');
+                }
+            });
+        }
+
+        document.querySelectorAll('a[href^="#"]').forEach(anchor => {
+            anchor.addEventListener('click', function(e) {
+                e.preventDefault();
+                const target = document.querySelector(this.getAttribute('href'));
+                if (target) {
+                    target.scrollIntoView({
+                        behavior: 'smooth',
+                        block: 'start'
+                    });
+                    if (mobileMenu) mobileMenu.classList.add('hidden');
+                }
+            });
+        });
+    </script>
+
+    <!-- ===================== ENROLL MODAL ===================== -->
+    <div id="enroll-modal" class="fixed inset-0 z-[999] flex items-center justify-center hidden" style="background:rgba(0,0,0,0.55)">
+        <div class="bg-white rounded-2xl shadow-2xl w-full max-w-md mx-4 p-8 relative">
+            <!-- Close -->
+            <button onclick="closeEnrollModal()" class="absolute top-4 right-4 text-gray-400 hover:text-gray-700">
+            <i data-lucide="x" class="w-5 h-5"></i>
+        </button>
+
+            <!-- Header -->
+            <div id="enroll-modal-header">
+                <h2 class="text-2xl font-bold text-gray-900 mb-1">Enroll Now</h2>
+                <p id="enroll-modal-course-name" class="text-primary-600 font-semibold mb-5 text-sm"></p>
+            </div>
+
+            <!-- Form -->
+            <div id="enroll-form-body">
+                <div class="space-y-4">
+                    <div class="grid grid-cols-2 gap-3">
+                        <div>
+                            <label class="block text-xs font-semibold text-gray-600 mb-1">First Name *</label>
+                            <input id="enroll-firstName" type="text" placeholder="John" class="w-full border border-gray-200 rounded-xl px-4 py-2.5 text-sm focus:outline-none focus:ring-2 focus:ring-primary-500">
+                        </div>
+                        <div>
+                            <label class="block text-xs font-semibold text-gray-600 mb-1">Last Name *</label>
+                            <input id="enroll-lastName" type="text" placeholder="Doe" class="w-full border border-gray-200 rounded-xl px-4 py-2.5 text-sm focus:outline-none focus:ring-2 focus:ring-primary-500">
+                        </div>
+                    </div>
+                    <div>
+                        <label class="block text-xs font-semibold text-gray-600 mb-1">Email *</label>
+                        <input id="enroll-email" type="email" placeholder="john@email.com" class="w-full border border-gray-200 rounded-xl px-4 py-2.5 text-sm focus:outline-none focus:ring-2 focus:ring-primary-500">
+                    </div>
+                    <div>
+                        <label class="block text-xs font-semibold text-gray-600 mb-1">Phone *</label>
+                        <input id="enroll-phone" type="tel" placeholder="+91 9876543210" class="w-full border border-gray-200 rounded-xl px-4 py-2.5 text-sm focus:outline-none focus:ring-2 focus:ring-primary-500">
+                    </div>
+                    <p id="enroll-error" class="text-red-500 text-xs hidden">Please fill in all fields correctly.</p>
+                </div>
+                <button onclick="submitEnroll()" class="mt-6 w-full bg-primary-600 hover:bg-primary-700 text-white py-3 rounded-full font-bold text-sm transition flex items-center justify-center gap-2" id="enroll-submit-btn">
+                Submit Enrollment
+            </button>
+            </div>
+
+            <!-- Success state -->
+            <div id="enroll-success" class="hidden text-center py-4">
+                <div class="w-16 h-16 bg-green-100 rounded-full flex items-center justify-center mx-auto mb-4">
+                    <i data-lucide="check-circle" class="w-8 h-8 text-green-600"></i>
+                </div>
+                <h3 class="text-xl font-bold text-gray-900 mb-2">You're Enrolled!</h3>
+                <p class="text-gray-500 text-sm">We've received your details and will reach out to you shortly.</p>
+                <button onclick="closeEnrollModal()" class="mt-5 bg-primary-600 text-white px-6 py-2.5 rounded-full text-sm font-semibold hover:bg-primary-700 transition">
+                Close
+            </button>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        // ── Google Sheets API endpoint ──────────────────────────────
+        const COURSES_API_URL = 'https://script.google.com/macros/s/AKfycbzh8LsLT4bvGEg8asP3j0pFEcf_6TMqrfFBm9r3a0c1S8C4-vWNl0Ygb8OwIaA2dAY/exec';
+
+        let _enrollCourseName = '';
+
+        function openEnrollModal(e) {
+            e.preventDefault();
+            // Get current course title from the page
+            _enrollCourseName = document.getElementById('course-title') ? .textContent || courseSlug || '';
+            document.getElementById('enroll-modal-course-name').textContent = _enrollCourseName;
+
+            // Reset form state
+            ['enroll-firstName', 'enroll-lastName', 'enroll-email', 'enroll-phone'].forEach(id => {
+                document.getElementById(id).value = '';
+            });
+            document.getElementById('enroll-error').classList.add('hidden');
+            document.getElementById('enroll-form-body').classList.remove('hidden');
+            document.getElementById('enroll-success').classList.add('hidden');
+            document.getElementById('enroll-modal-header').classList.remove('hidden');
+
+            document.getElementById('enroll-modal').classList.remove('hidden');
+            lucide.createIcons();
+        }
+
+        function closeEnrollModal() {
+            document.getElementById('enroll-modal').classList.add('hidden');
+        }
+
+        // Close on backdrop click
+        document.getElementById('enroll-modal').addEventListener('click', function(e) {
+            if (e.target === this) closeEnrollModal();
+        });
+
+        async function submitEnroll() {
+            const firstName = document.getElementById('enroll-firstName').value.trim();
+            const lastName = document.getElementById('enroll-lastName').value.trim();
+            const email = document.getElementById('enroll-email').value.trim();
+            const phone = document.getElementById('enroll-phone').value.trim();
+
+            // Basic validation
+            const emailOk = /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email);
+            if (!firstName || !lastName || !emailOk || !phone) {
+                document.getElementById('enroll-error').classList.remove('hidden');
+                return;
+            }
+            document.getElementById('enroll-error').classList.add('hidden');
+
+            // Disable button & show loading
+            const btn = document.getElementById('enroll-submit-btn');
+            btn.disabled = true;
+            btn.textContent = 'Submitting...';
+
+            const params = new URLSearchParams({
+                type: 'courses_enroll',
+                course: _enrollCourseName,
+                firstName: firstName,
+                lastName: lastName,
+                email: email,
+                phone: phone,
+                source: window.location.href
+            });
+
+            try {
+                await fetch(`${COURSES_API_URL}?${params.toString()}`, {
+                    method: 'GET',
+                    mode: 'no-cors'
+                });
+            } catch (err) {
+                // no-cors means we can't read response; treat as success
+            }
+
+            // Show success
+            document.getElementById('enroll-form-body').classList.add('hidden');
+            document.getElementById('enroll-modal-header').classList.add('hidden');
+            document.getElementById('enroll-success').classList.remove('hidden');
+            lucide.createIcons();
+
+            btn.disabled = false;
+            btn.textContent = 'Submit Enrollment';
+        }
+    </script>
+    <!-- ===================== END ENROLL MODAL ===================== -->
+
+</body>
+
+</html>

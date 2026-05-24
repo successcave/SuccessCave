@@ -1,0 +1,657 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Contact - Success Cave</title>
+    <link rel="icon" type="image/png" href="logo2.png">
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
+    <script src="https://unpkg.com/lucide@latest"></script>
+    <script>
+        tailwind.config = {
+            theme: {
+                extend: {
+                    fontFamily: {
+                        sans: ['Inter', 'sans-serif'],
+                    },
+                    colors: {
+                        primary: {
+                            50: '#eff6ff',
+                            100: '#dbeafe',
+                            500: '#3b82f6',
+                            600: '#2563eb',
+                            700: '#1d4ed8',
+                            900: '#1e3a8a',
+                        },
+                        accent: {
+                            500: '#f59e0b',
+                            600: '#d97706',
+                        }
+                    }
+                }
+            }
+        }
+    </script>
+    <style>
+        .gradient-hero {
+            background: linear-gradient(135deg, #1e3a8a 0%, #2563eb 50%, #3b82f6 100%);
+        }
+        .gradient-text {
+            background: linear-gradient(135deg, #2563eb, #f59e0b);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+        }
+        .card-hover {
+            transition: all 0.3s ease;
+        }
+        .card-hover:hover {
+            transform: translateY(-8px);
+            box-shadow: 0 20px 40px -10px rgba(0,0,0,0.15);
+        }
+        .animate-float {
+            animation: float 6s ease-in-out infinite;
+        }
+        @keyframes float {
+            0%, 100% { transform: translateY(0px); }
+            50% { transform: translateY(-20px); }
+        }
+        .reveal {
+            opacity: 0;
+            transform: translateY(30px);
+            transition: all 0.8s ease-out;
+        }
+        .reveal.active {
+            opacity: 1;
+            transform: translateY(0);
+        }
+        .blob {
+            position: absolute;
+            filter: blur(80px);
+            opacity: 0.4;
+            z-index: 0;
+        }
+        .modal-overlay {
+            position: fixed;
+            inset: 0;
+            background: rgba(0,0,0,0.6);
+            backdrop-filter: blur(4px);
+            z-index: 100;
+            display: none;
+            align-items: center;
+            justify-content: center;
+            padding: 1rem;
+        }
+        .modal-overlay.active {
+            display: flex;
+        }
+        .modal-content {
+            background: white;
+            border-radius: 1.5rem;
+            max-width: 600px;
+            width: 100%;
+            max-height: 90vh;
+            overflow-y: auto;
+            padding: 2rem;
+            position: relative;
+            animation: modalSlide 0.3s ease-out;
+        }
+        @keyframes modalSlide {
+            from { opacity: 0; transform: translateY(20px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+    
+        .bootcamp-card {
+            animation: bootcampPulse 3s ease-in-out infinite;
+        }
+        @keyframes bootcampPulse {
+            0%, 100% { transform: scale(1); box-shadow: 0 10px 40px -10px rgba(37, 99, 235, 0.3); }
+            50% { transform: scale(1.02); box-shadow: 0 20px 60px -10px rgba(37, 99, 235, 0.5); }
+        }
+        .bootcamp-badge {
+            animation: badgeGlow 2s ease-in-out infinite;
+        }
+        @keyframes badgeGlow {
+            0%, 100% { box-shadow: 0 0 5px rgba(245, 158, 11, 0.3); }
+            50% { box-shadow: 0 0 20px rgba(245, 158, 11, 0.6); }
+        }
+        .bootcamp-btn {
+            animation: btnBounce 2s ease-in-out infinite;
+        }
+        @keyframes btnBounce {
+            0%, 100% { transform: translateY(0); }
+            50% { transform: translateY(-3px); }
+        }
+    </style>
+    <script src="announcement-bar.js" defer></script>
+</head>
+<body class="font-sans text-gray-800 antialiased overflow-x-hidden">
+
+    <!-- Navigation -->
+    <nav class="relative w-full z-50 bg-white/90 backdrop-blur-md border-b border-gray-100 transition-all duration-300" id="navbar">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+            <div class="flex justify-between items-center h-16">
+                <a href="index.html" class="flex items-center gap-3">
+                    <img src="logo2.png" alt="Success Cave Logo" class="w-10 h-10 object-contain">
+                    <span class="text-2xl font-bold text-gray-900">Success<span class="text-primary-600">Cave</span></span>
+                </a>
+
+                <div class="hidden md:flex items-center space-x-8">
+                    <a href="courses.html" class="text-gray-600 hover:text-primary-600 font-medium transition">Programs</a>
+                    <a href="about.html" class="text-gray-600 hover:text-primary-600 font-medium transition">About Us</a>
+                    <a href="index.html#testimonials" class="text-gray-600 hover:text-primary-600 font-medium transition">Success Stories</a>
+                    <a href="contact.html" class="text-gray-600 hover:text-primary-600 font-medium transition">Contact</a>
+                </div>
+
+                <div class="hidden md:flex items-center space-x-4">
+                    <a href="contact.html" class="bg-primary-600 hover:bg-primary-700 text-white px-6 py-2.5 rounded-full font-semibold transition shadow-lg shadow-primary-500/30">
+                        Get Started
+                    </a>
+                </div>
+
+                <button class="md:hidden text-gray-600" id="mobile-menu-btn">
+                    <i data-lucide="menu" class="w-6 h-6"></i>
+                </button>
+            </div>
+        </div>
+
+        <!-- Mobile Menu -->
+        <div class="hidden md:hidden bg-white border-t border-gray-100" id="mobile-menu">
+            <div class="px-4 py-4 space-y-3">
+                <a href="courses.html" class="block text-gray-600 hover:text-primary-600 font-medium">Programs</a>
+                <a href="about.html" class="block text-gray-600 hover:text-primary-600 font-medium">About Us</a>
+                <a href="index.html#testimonials" class="block text-gray-600 hover:text-primary-600 font-medium">Success Stories</a>
+                <a href="contact.html" class="block text-gray-600 hover:text-primary-600 font-medium">Contact</a>
+                <a href="contact.html" class="block w-full bg-primary-600 text-white px-6 py-3 rounded-full font-semibold mt-4 text-center">Get Started</a>
+            </div>
+        </div>
+    </nav>
+    <!-- Page Header -->
+    <section class="relative pt-20 pb-12 gradient-hero overflow-hidden">
+        <div class="blob bg-primary-400 w-96 h-96 rounded-full top-0 left-0"></div>
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 relative z-10">
+            <div class="text-center max-w-3xl mx-auto">
+                <span class="text-accent-500 font-semibold text-sm uppercase tracking-wider">Get in Touch</span>
+                <h1 class="text-5xl md:text-6xl font-bold text-white mt-3 mb-6">Let's Start Your Journey</h1>
+                <p class="text-xl text-blue-100">Have questions? Want to apply? We're here to help you take the next step.</p>
+            </div>
+        </div>
+    </section>
+
+    <!-- Contact Section -->
+    <section class="py-24 bg-white">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+            <div class="grid lg:grid-cols-2 gap-16">
+                <!-- Contact Form -->
+                <div class="reveal">
+                    <h2 class="text-3xl font-bold text-gray-900 mb-6">Send us a message</h2>
+                    <form id="contact-form" class="space-y-6" onsubmit="event.preventDefault(); handleContactSubmit();">
+                        <!-- Query Type Selection -->
+                        <div>
+                            <label class="block text-sm font-medium text-gray-700 mb-3">What is your query about? *</label>
+                            <div class="grid grid-cols-2 gap-4">
+                                <label class="cursor-pointer">
+                                    <input type="radio" name="query-type" value="general" class="peer sr-only" checked>
+                                    <div class="rounded-xl border-2 border-gray-200 p-4 text-center hover:border-primary-300 peer-checked:border-primary-600 peer-checked:bg-primary-50 transition">
+                                        <i data-lucide="message-circle" class="w-6 h-6 text-gray-400 peer-checked:text-primary-600 mx-auto mb-2"></i>
+                                        <span class="font-semibold text-gray-700 peer-checked:text-primary-700">General Query</span>
+                                    </div>
+                                </label>
+                                <label class="cursor-pointer">
+                                    <input type="radio" name="query-type" value="program" class="peer sr-only">
+                                    <div class="rounded-xl border-2 border-gray-200 p-4 text-center hover:border-primary-300 peer-checked:border-primary-600 peer-checked:bg-primary-50 transition">
+                                        <i data-lucide="book-open" class="w-6 h-6 text-gray-400 peer-checked:text-primary-600 mx-auto mb-2"></i>
+                                        <span class="font-semibold text-gray-700 peer-checked:text-primary-700">Program Related</span>
+                                    </div>
+                                </label>
+                            </div>
+                        </div>
+
+                        <div class="grid md:grid-cols-2 gap-6">
+                            <div>
+                                <label class="block text-sm font-medium text-gray-700 mb-2">First Name *</label>
+                                <input type="text" id="contact-fname" required class="w-full px-4 py-3 rounded-xl border border-gray-200 focus:border-primary-500 focus:ring-2 focus:ring-primary-200 outline-none transition" placeholder="John">
+                            </div>
+                            <div>
+                                <label class="block text-sm font-medium text-gray-700 mb-2">Last Name *</label>
+                                <input type="text" id="contact-lname" required class="w-full px-4 py-3 rounded-xl border border-gray-200 focus:border-primary-500 focus:ring-2 focus:ring-primary-200 outline-none transition" placeholder="Doe">
+                            </div>
+                        </div>
+                        <div>
+                            <label class="block text-sm font-medium text-gray-700 mb-2">Email Address *</label>
+                            <input type="email" id="contact-email" required class="w-full px-4 py-3 rounded-xl border border-gray-200 focus:border-primary-500 focus:ring-2 focus:ring-primary-200 outline-none transition" placeholder="john@example.com">
+                        </div>
+                        <div>
+                            <label class="block text-sm font-medium text-gray-700 mb-2">Program Interest</label>
+                            <select id="contact-program" class="w-full px-4 py-3 rounded-xl border border-gray-200 focus:border-primary-500 focus:ring-2 focus:ring-primary-200 outline-none transition bg-white">
+                                <option>Select a program</option>
+                                <option>Full-Stack Development</option>
+                                <option>Data Analytics</option>
+                                <option>AI & Machine Learning</option>
+                                <option>UX/UI Design</option>
+                                <option>Cybersecurity</option>
+                                <option>Growth Marketing</option>
+                                <option>SQL Masters</option>
+                                <option>Excel Masterclass</option>
+                                <option>Others</option>
+                            </select>
+                        </div>
+                        <div>
+                            <label class="block text-sm font-medium text-gray-700 mb-2">Message *</label>
+                            <textarea id="contact-message" rows="4" required class="w-full px-4 py-3 rounded-xl border border-gray-200 focus:border-primary-500 focus:ring-2 focus:ring-primary-200 outline-none transition resize-none" placeholder="Tell us about your goals..."></textarea>
+                        </div>
+                        <button type="submit" id="contact-submit-btn" class="w-full bg-primary-600 hover:bg-primary-700 text-white px-8 py-4 rounded-full font-bold text-lg transition shadow-lg flex items-center justify-center gap-2">
+                            <span>Send Message</span>
+                            <i data-lucide="send" class="w-5 h-5"></i>
+                        </button>
+                    </form>
+                </div>
+
+                <!-- Contact Info -->
+                <div class="reveal">
+                    <div class="bg-gray-50 rounded-2xl p-8 border border-gray-100 mb-8">
+                        <h3 class="text-2xl font-bold text-gray-900 mb-6">Contact Information</h3>
+                        <div class="space-y-6">
+                            <div class="flex items-start gap-4">
+                                <div class="w-12 h-12 bg-primary-100 rounded-xl flex items-center justify-center flex-shrink-0">
+                                    <i data-lucide="mail" class="w-6 h-6 text-primary-600"></i>
+                                </div>
+                                <div>
+                                    <h4 class="font-semibold text-gray-900">Email</h4>
+                                    <p class="text-gray-600">successcave1804@gmail.com</p>
+                                </div>
+                            </div>
+                            <div class="flex items-start gap-4">
+                                <div class="w-12 h-12 bg-primary-100 rounded-xl flex items-center justify-center flex-shrink-0">
+                                    <i data-lucide="map-pin" class="w-6 h-6 text-primary-600"></i>
+                                </div>
+                                <div>
+                                    <h4 class="font-semibold text-gray-900">Location</h4>
+                                    <p class="text-gray-600">New Delhi, India</p>
+                                    <p class="text-gray-500 text-sm">Online & In-Person Training Available</p>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- UPCOMING BOOTCAMP CARD -->
+                    <div class="bg-primary-600 rounded-2xl p-8 text-white shadow-xl bootcamp-card">
+                        <div class="flex items-center gap-2 bg-white/20 backdrop-blur-sm px-3 py-1 rounded-full text-sm font-medium mb-4 w-fit border border-white/30 bootcamp-badge">
+                            <i data-lucide="flame" class="w-4 h-4 text-accent-400"></i>
+                            Limited Seats Available
+                        </div>
+                        <h3 class="text-2xl font-bold mb-2">Data Analytics Bootcamp</h3>
+                        <p class="text-blue-100 mb-4">Our most in-demand program. Launching the next cohort on <strong>June 13, 2026</strong>.</p>
+                        <div class="flex items-center gap-4 mb-6">
+                            <div class="text-center">
+                                <div class="text-2xl font-bold">4</div>
+                                <div class="text-xs text-blue-200">Weeks</div>
+                            </div>
+                            <div class="w-px h-10 bg-white/30"></div>
+                            <div class="text-center">
+                                <div class="text-2xl font-bold">Live</div>
+                                <div class="text-xs text-blue-200">Classes</div>
+                            </div>
+                            <div class="w-px h-10 bg-white/30"></div>
+                            <div class="text-center">
+                                <div class="text-2xl font-bold">1:1</div>
+                                <div class="text-xs text-blue-200">Mentorship</div>
+                            </div>
+                        </div>
+                        <button onclick="openBootcampModal()" class="block w-full bg-accent-500 hover:bg-accent-600 text-white text-center px-6 py-3 rounded-full font-bold transition cursor-pointer bootcamp-btn">
+                            Apply Now — Data Analytics Bootcamp
+                        </button>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- FAQ Section -->
+    <section class="py-24 bg-gray-50">
+        <div class="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8">
+            <div class="text-center mb-16 reveal">
+                <span class="text-primary-600 font-semibold text-sm uppercase tracking-wider">FAQ</span>
+                <h2 class="text-4xl md:text-5xl font-bold text-gray-900 mt-3">Common Questions</h2>
+            </div>
+
+            <div class="space-y-4 reveal">
+                <div class="bg-white rounded-xl p-6 border border-gray-100">
+                    <h3 class="text-lg font-bold text-gray-900 mb-2">Do I need prior experience?</h3>
+                    <p class="text-gray-600">No. Our programs are designed for beginners and career switchers. We start from fundamentals and build up to advanced concepts.</p>
+                </div>
+                <div class="bg-white rounded-xl p-6 border border-gray-100">
+                    <h3 class="text-lg font-bold text-gray-900 mb-2">What is the class format?</h3>
+                    <p class="text-gray-600">Live online sessions with small cohorts (max 25 students), hands-on projects, and 1-on-1 mentorship. Recordings available for all sessions.</p>
+                </div>
+                <div class="bg-white rounded-xl p-6 border border-gray-100">
+                    <h3 class="text-lg font-bold text-gray-900 mb-2">Is there a certificate?</h3>
+                    <p class="text-gray-600">Yes. Every graduate receives a professional certificate recognized by our 200+ hiring partners.</p>
+                </div>
+                <div class="bg-white rounded-xl p-6 border border-gray-100">
+                    <h3 class="text-lg font-bold text-gray-900 mb-2">Can I pay in installments?</h3>
+                    <p class="text-gray-600">Yes. We offer flexible EMI options and early-bird scholarships. Contact our team to find a plan that works for you.</p>
+                </div>
+            </div>
+        </div>
+    </section>
+    <!-- Bootcamp Application Modal -->
+    <div class="modal-overlay" id="bootcamp-modal">
+        <div class="modal-content">
+            <button onclick="closeBootcampModal()" class="absolute top-4 right-4 w-10 h-10 bg-gray-100 rounded-full flex items-center justify-center hover:bg-gray-200 transition">
+                <i data-lucide="x" class="w-5 h-5"></i>
+            </button>
+            <div class="text-center mb-6">
+                <div class="w-16 h-16 bg-primary-100 rounded-2xl flex items-center justify-center mx-auto mb-4">
+                    <i data-lucide="bar-chart-3" class="w-8 h-8 text-primary-600"></i>
+                </div>
+                <h3 class="text-2xl font-bold text-gray-900">Data Analytics Bootcamp</h3>
+                <p class="text-gray-600 mt-2">Data Analytics Bootcamp • 4-Week Intensive Program • Starting June 13, 2026</p>
+            </div>
+            <form class="space-y-4" onsubmit="event.preventDefault(); showBootcampSuccess(this);">
+                <div class="grid md:grid-cols-2 gap-4">
+                    <div>
+                        <label class="block text-sm font-medium text-gray-700 mb-1">First Name *</label>
+                        <input type="text" required class="w-full px-4 py-3 rounded-xl border border-gray-200 focus:border-primary-500 focus:ring-2 focus:ring-primary-200 outline-none transition" placeholder="John">
+                    </div>
+                    <div>
+                        <label class="block text-sm font-medium text-gray-700 mb-1">Last Name *</label>
+                        <input type="text" required class="w-full px-4 py-3 rounded-xl border border-gray-200 focus:border-primary-500 focus:ring-2 focus:ring-primary-200 outline-none transition" placeholder="Doe">
+                    </div>
+                </div>
+                <div>
+                    <label class="block text-sm font-medium text-gray-700 mb-1">Email Address *</label>
+                    <input type="email" required class="w-full px-4 py-3 rounded-xl border border-gray-200 focus:border-primary-500 focus:ring-2 focus:ring-primary-200 outline-none transition" placeholder="john@example.com">
+                </div>
+                <div>
+                    <label class="block text-sm font-medium text-gray-700 mb-1">Phone Number *</label>
+                    <input type="tel" required class="w-full px-4 py-3 rounded-xl border border-gray-200 focus:border-primary-500 focus:ring-2 focus:ring-primary-200 outline-none transition" placeholder="+91 98765 43210">
+                </div>
+
+                <!-- Education Details -->
+                <div class="grid md:grid-cols-2 gap-4">
+                    <div>
+                        <label class="block text-sm font-medium text-gray-700 mb-1">Last / Current Degree *</label>
+                        <input type="text" required class="w-full px-4 py-3 rounded-xl border border-gray-200 focus:border-primary-500 focus:ring-2 focus:ring-primary-200 outline-none transition" placeholder="B.Tech, BBA, MBA, etc.">
+                    </div>
+                    <div>
+                        <label class="block text-sm font-medium text-gray-700 mb-1">Last / Current Institute *</label>
+                        <input type="text" required class="w-full px-4 py-3 rounded-xl border border-gray-200 focus:border-primary-500 focus:ring-2 focus:ring-primary-200 outline-none transition" placeholder="Delhi University, IIT, etc.">
+                    </div>
+                </div>
+
+                <div>
+                    <label class="block text-sm font-medium text-gray-700 mb-1">Current Role / Occupation *</label>
+                    <input type="text" required class="w-full px-4 py-3 rounded-xl border border-gray-200 focus:border-primary-500 focus:ring-2 focus:ring-primary-200 outline-none transition" placeholder="Student, Working Professional, etc.">
+                </div>
+
+                <div>
+                    <label class="block text-sm font-medium text-gray-700 mb-1">Referral Code <span class="text-gray-400 font-normal">(Optional)</span></label>
+                    <input type="text" class="w-full px-4 py-3 rounded-xl border border-gray-200 focus:border-primary-500 focus:ring-2 focus:ring-primary-200 outline-none transition" placeholder="Enter referral code if you have one">
+                </div>
+
+                <div>
+                    <label class="block text-sm font-medium text-gray-700 mb-1">Your Vision & Goals *</label>
+                    <p class="text-xs text-gray-500 mb-1">Tell us why you want to join this program and what you hope to achieve.</p>
+                    <textarea rows="4" required class="w-full px-4 py-3 rounded-xl border border-gray-200 focus:border-primary-500 focus:ring-2 focus:ring-primary-200 outline-none transition resize-none" placeholder="I want to master data analytics to transition into a business analyst role..."></textarea>
+                </div>
+                <div>
+                    <label class="block text-sm font-medium text-gray-700 mb-1">How did you hear about us?</label>
+                    <select class="w-full px-4 py-3 rounded-xl border border-gray-200 focus:border-primary-500 focus:ring-2 focus:ring-primary-200 outline-none transition bg-white">
+                        <option>Select an option</option>
+                        <option>Social Media</option>
+                        <option>Friend / Referral</option>
+                        <option>Google Search</option>
+                        <option>Campus Event</option>
+                        <option>Other</option>
+                    </select>
+                </div>
+                <button type="submit" class="w-full bg-accent-500 hover:bg-accent-600 text-white px-8 py-4 rounded-full font-bold text-lg transition shadow-lg">
+                    Submit Application
+                </button>
+                <p class="text-xs text-gray-500 text-center">By applying, you agree to our <a href="terms-of-service.html" class="text-primary-600 hover:underline">Terms of Service</a> and <a href="privacy-policy.html" class="text-primary-600 hover:underline">Privacy Policy</a>.</p>
+            </form>
+        </div>
+    </div>
+
+
+    
+    <!-- Success Notification -->
+    <div id="success-notification" class="fixed top-24 right-4 z-50 bg-white rounded-2xl shadow-2xl border border-gray-100 p-6 max-w-sm transform translate-x-full transition-transform duration-500 ease-out">
+        <div class="flex items-start gap-4">
+            <div class="w-12 h-12 bg-green-100 rounded-full flex items-center justify-center flex-shrink-0">
+                <i data-lucide="check-circle" class="w-6 h-6 text-green-600"></i>
+            </div>
+            <div>
+                <h4 class="font-bold text-gray-900 mb-1" id="success-title">Message Sent!</h4>
+                <p class="text-sm text-gray-600" id="success-message">We will get back to you within 24 hours.</p>
+                <div class="flex items-center gap-2 mt-3 text-xs text-gray-500">
+                    <i data-lucide="clock" class="w-3 h-3"></i>
+                    <span id="success-time">Response time: 24 hours</span>
+                </div>
+            </div>
+            <button onclick="hideSuccessNotification()" class="text-gray-400 hover:text-gray-600">
+                <i data-lucide="x" class="w-5 h-5"></i>
+            </button>
+        </div>
+    </div>
+
+    <script>
+        const APPS_SCRIPT_URL = 'https://script.google.com/macros/s/AKfycbzJQ4jKxttWfeWTrYeInGomoNjTmtDlI5cCtzABne0fb666aaV_oSaWhPgT5-hvgC3bRw/exec';
+
+        function submitToSheet(params) {
+            const url = APPS_SCRIPT_URL + '?' + new URLSearchParams(params).toString();
+            return new Promise((resolve) => {
+                const img = new Image();
+                img.onload = img.onerror = () => resolve();
+                img.src = url;
+                setTimeout(resolve, 3000);
+            });
+        }
+
+        function showSuccessNotification(title, message, timeText) {
+            const notif = document.getElementById('success-notification');
+            document.getElementById('success-title').textContent = title;
+            document.getElementById('success-message').textContent = message;
+            document.getElementById('success-time').textContent = timeText;
+            notif.classList.remove('translate-x-full');
+            setTimeout(hideSuccessNotification, 5000);
+        }
+        function hideSuccessNotification() {
+            document.getElementById('success-notification').classList.add('translate-x-full');
+        }
+
+        async function handleContactSubmit() {
+            const btn = document.getElementById('contact-submit-btn');
+            const originalHTML = btn.innerHTML;
+            btn.innerHTML = '<span>Sending...</span><svg class="animate-spin w-5 h-5" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24"><circle class="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" stroke-width="4"></circle><path class="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z"></path></svg>';
+            btn.disabled = true;
+
+            const params = {
+                type: 'contact',
+                firstName: document.getElementById('contact-fname').value.trim(),
+                lastName: document.getElementById('contact-lname').value.trim(),
+                email: document.getElementById('contact-email').value.trim(),
+                program: document.getElementById('contact-program').value,
+                message: document.getElementById('contact-message').value.trim(),
+                queryType: document.querySelector('input[name="query-type"]:checked')?.value || 'general'
+            };
+
+            await submitToSheet(params);
+
+            btn.innerHTML = originalHTML;
+            btn.disabled = false;
+            lucide.createIcons();
+            document.getElementById('contact-form').reset();
+            showSuccessNotification(
+                "Message Sent! 🚀",
+                "Our team is on it! Expect a response within 24 hours.",
+                "Typical response: Within 24 hours"
+            );
+        }
+
+        async function showBootcampSuccess(formEl) {
+            const btn = formEl.querySelector('button[type="submit"]');
+            const originalHTML = btn.innerHTML;
+            btn.innerHTML = '<span>Submitting...</span>';
+            btn.disabled = true;
+
+            const fields = formEl.querySelectorAll('input, select, textarea');
+            const params = {
+                type: 'BootCamp_DA_1Jun26',
+                firstName: fields[0]?.value.trim() || '',
+                lastName: fields[1]?.value.trim() || '',
+                email: fields[2]?.value.trim() || '',
+                phone: fields[3]?.value.trim() || '',
+                degree: fields[4]?.value.trim() || '',
+                institute: fields[5]?.value.trim() || '',
+                role: fields[6]?.value.trim() || '',
+                referral: fields[7]?.value.trim() || '',
+                goals: fields[8]?.value.trim() || '',
+                source: fields[9]?.value || ''
+            };
+
+            await submitToSheet(params);
+
+            btn.innerHTML = originalHTML;
+            btn.disabled = false;
+            closeBootcampModal();
+            showSuccessNotification(
+                "Application Received! 🎉",
+                "You're one step closer! Check your email for next steps.",
+                "Review time: 2-3 business days"
+            );
+        }
+    </script>
+    <script>
+        function openBootcampModal() {
+            const modal = document.getElementById('bootcamp-modal');
+            if (modal) {
+                modal.classList.add('active');
+                document.body.style.overflow = 'hidden';
+                if (typeof lucide !== 'undefined') lucide.createIcons();
+            }
+        }
+
+        function closeBootcampModal() {
+            const modal = document.getElementById('bootcamp-modal');
+            if (modal) {
+                modal.classList.remove('active');
+                document.body.style.overflow = '';
+            }
+        }
+
+        document.addEventListener('DOMContentLoaded', function() {
+            const modal = document.getElementById('bootcamp-modal');
+            if (modal) {
+                modal.addEventListener('click', function(e) {
+                    if (e.target === this) closeBootcampModal();
+                });
+            }
+        });
+    </script>
+    <!-- Footer -->
+    <footer class="bg-gray-900 text-gray-400 py-16 border-t border-gray-800">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+            <div class="grid md:grid-cols-4 gap-12 mb-12">
+                <div class="col-span-2">
+                    <div class="flex items-center gap-3 mb-6">
+                        <img src="logo2.png" alt="Success Cave Logo" class="w-10 h-10 object-contain">
+                        <span class="text-2xl font-bold text-white">Success<span class="text-primary-500">Cave</span></span>
+                    </div>
+                    <p class="text-gray-500 mb-6 max-w-sm">Empowering individuals through world-class skill development. Bridging the gap between talent and opportunity with practical, industry-aligned training.</p>
+                    <div class="flex gap-4">
+                        <a href="https://linkedin.com/company/successcave" target="_blank" class="w-10 h-10 bg-gray-800 rounded-lg flex items-center justify-center hover:bg-[#0A66C2] hover:text-white transition" title="LinkedIn">
+                            <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M16 8a6 6 0 0 1 6 6v7h-4v-7a2 2 0 0 0-2-2 2 2 0 0 0-2 2v7h-4v-7a6 6 0 0 1 6-6z"/><rect x="2" y="9" width="4" height="12"/><circle cx="4" cy="4" r="2"/></svg>
+                        </a>
+                        <a href="https://www.youtube.com/@successcave3300" target="_blank" class="w-10 h-10 bg-gray-800 rounded-lg flex items-center justify-center hover:bg-[#FF0000] hover:text-white transition" title="YouTube">
+                            <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M2.5 17a24.12 24.12 0 0 1 0-10 2 2 0 0 1 1.4-1.4 49.56 49.56 0 0 1 16.2 0A2 2 0 0 1 21.5 7a24.12 24.12 0 0 1 0 10 2 2 0 0 1-1.4 1.4 49.55 49.55 0 0 1-16.2 0A2 2 0 0 1 2.5 17"/><path d="m10 15 5-3-5-3z"/></svg>
+                        </a>
+                        <a href="https://mail.google.com/mail/?view=cm&fs=1&to=successcave1804@gmail.com" target="_blank" class="w-10 h-10 bg-gray-800 rounded-lg flex items-center justify-center hover:bg-[#EA4335] hover:text-white transition" title="Gmail">
+                            <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="2" y="4" width="20" height="16" rx="2"/><path d="m22 7-8.97 5.7a1.94 1.94 0 0 1-2.06 0L2 7"/></svg>
+                        </a>
+                    </div>
+                </div>
+
+                <div>
+                    <h4 class="text-white font-bold mb-4">Programs</h4>
+                    <ul class="space-y-3">
+                        <li><a href="courses.html" class="hover:text-primary-400 transition">Full-Stack Development</a></li>
+                        <li><a href="courses.html" class="hover:text-primary-400 transition">Data Analytics</a></li>
+                        <li><a href="courses.html" class="hover:text-primary-400 transition">AI & Machine Learning</a></li>
+                        <li><a href="courses.html" class="hover:text-primary-400 transition">UX/UI Design</a></li>
+                        <li><a href="courses.html" class="hover:text-primary-400 transition">SQL Masters</a></li>
+                        <li><a href="courses.html" class="hover:text-primary-400 transition">Excel Masterclass</a></li>
+                    </ul>
+                </div>
+
+                <div>
+                    <h4 class="text-white font-bold mb-4">Company</h4>
+                    <ul class="space-y-3">
+                        <li><a href="about.html" class="hover:text-primary-400 transition">About Us</a></li>
+                        <li><a href="about.html#founders" class="hover:text-primary-400 transition">Founders</a></li>
+                        <li><a href="careers.html" class="hover:text-primary-400 transition">Careers</a></li>
+                        <li><a href="index.html#testimonials" class="hover:text-primary-400 transition">Success Stories</a></li>
+                        <li><a href="contact.html" class="hover:text-primary-400 transition">Contact</a></li>
+                    </ul>
+                </div>
+            </div>
+
+            <div class="border-t border-gray-800 pt-8 flex flex-col md:flex-row justify-between items-center gap-4">
+                <p class="text-sm">© 2026 Success Cave, Inc. All rights reserved.</p>
+                <div class="flex gap-6 text-sm">
+                    <a href="privacy-policy.html" class="hover:text-white transition">Privacy Policy</a>
+                    <a href="terms-of-service.html" class="hover:text-white transition">Terms of Service</a>
+                </div>
+            </div>
+        </div>
+    </footer>
+
+    <script>
+        lucide.createIcons();
+
+        const mobileMenuBtn = document.getElementById('mobile-menu-btn');
+        const mobileMenu = document.getElementById('mobile-menu');
+        if(mobileMenuBtn && mobileMenu) {
+            mobileMenuBtn.addEventListener('click', () => {
+                mobileMenu.classList.toggle('hidden');
+            });
+        }
+
+        const revealElements = document.querySelectorAll('.reveal');
+        const revealObserver = new IntersectionObserver((entries) => {
+            entries.forEach(entry => {
+                if (entry.isIntersecting) {
+                    entry.target.classList.add('active');
+                }
+            });
+        }, { threshold: 0.1 });
+
+        revealElements.forEach(el => revealObserver.observe(el));
+
+        const navbar = document.getElementById('navbar');
+        if(navbar) {
+            window.addEventListener('scroll', () => {
+                if (window.scrollY > 50) {
+                    navbar.classList.add('shadow-md');
+                } else {
+                    navbar.classList.remove('shadow-md');
+                }
+            });
+        }
+
+        document.querySelectorAll('a[href^="#"]').forEach(anchor => {
+            anchor.addEventListener('click', function (e) {
+                e.preventDefault();
+                const target = document.querySelector(this.getAttribute('href'));
+                if (target) {
+                    target.scrollIntoView({ behavior: 'smooth', block: 'start' });
+                    if(mobileMenu) mobileMenu.classList.add('hidden');
+                }
+            });
+        });
+    </script>
+</body>
+</html>
