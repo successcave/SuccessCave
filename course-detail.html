@@ -648,7 +648,7 @@
 
 <script>
 // ── Google Sheets API endpoint ──────────────────────────────
-const COURSES_API_URL = 'https://script.google.com/macros/s/AKfycbzh8LsLT4bvGEg8asP3j0pFEcf_6TMqrfFBm9r3a0c1S8C4-vWNl0Ygb8OwIaA2dAY/exec';
+const COURSES_API_URL = 'https://script.google.com/macros/s/AKfycbzJQ4jKxttWfeWTrYeInGomoNjTmtDlI5cCtzABne0fb666aaV_oSaWhPgT5-hvgC3bRw/exec';
 
 let _enrollCourseName = '';
 
@@ -712,11 +712,13 @@ async function submitEnroll() {
         source:     window.location.href
     });
 
-    try {
-        await fetch(`${COURSES_API_URL}?${params.toString()}`, { method: 'GET', mode: 'no-cors' });
-    } catch(err) {
-        // no-cors means we can't read response; treat as success
-    }
+    // Use Image trick to bypass CORS (same pattern as contact/careers forms)
+    await new Promise((resolve) => {
+        const img = new Image();
+        img.onload = img.onerror = () => resolve();
+        img.src = `${COURSES_API_URL}?${params.toString()}`;
+        setTimeout(resolve, 3000);
+    });
 
     // Show success
     document.getElementById('enroll-form-body').classList.add('hidden');
